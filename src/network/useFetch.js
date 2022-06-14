@@ -1,13 +1,21 @@
 import { useCallback, useState } from 'react'
 import fetcher from './fetcher'
 
-const useFetch = () => {
+const useFetch = (initialUrl) => {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    const fetchData = useCallback((url, options) => {
+    const defaultOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+    }
+
+    const fetchData = useCallback((url = initialUrl, options) => {
         setLoading(true)
-        fetcher(url, options)
+        fetcher(url, { ...defaultOptions, ...options })
             .then(response => response.json())
             .then(data => {
                 setData(data)

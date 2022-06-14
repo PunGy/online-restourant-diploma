@@ -1,7 +1,23 @@
 import * as React from 'react';
 import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Typography } from '@mui/material';
+import useFetch from '../../network/useFetch';
 
 const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
+    const {fetchData: sendRegistrate} = useFetch()
+
+    const registrate = React.useCallback(async () => {
+        const email = document.getElementById('email').value
+        const fullName = document.getElementById('full-name').value
+        const password = document.getElementById('password').value
+        await sendRegistrate('/registration', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, full_name: fullName, password }) 
+        })
+        handleCloseDialog()
+    }, [])
     return (
         <>
             <DialogTitle>Регистрация</DialogTitle>
@@ -40,7 +56,7 @@ const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
             <DialogActions>
                 <Typography onClick={setLogin} sx={{ flex: '1 1 0', cursor: 'pointer', textDecoration: 'underline' }} color="primary">Логин</Typography>
                 <Button onClick={handleCloseDialog}>Отмена</Button>
-                <Button onClick={handleCloseDialog}>Регистрация</Button>
+                <Button onClick={registrate}>Регистрация</Button>
             </DialogActions>
         </>
     )

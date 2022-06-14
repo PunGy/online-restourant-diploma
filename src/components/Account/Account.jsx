@@ -61,7 +61,7 @@ const Account = ({ account }) => {
                 open={Boolean(anchorMenuEl)}
                 onClose={handleCloseMenu}
               >
-                <MenuItem onClick={handleCloseMenu}>Максим</MenuItem>
+                <MenuItem onClick={handleCloseMenu}>{account.full_name}</MenuItem>
               </Menu>
             ) : (
               <Dialog open={Boolean(anchorDialogEl)} onClose={handleCloseDialog}>

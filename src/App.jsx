@@ -7,29 +7,31 @@ import ProductsList from './components/Products/ProductsList'
 import Account from './components/Account/Account'
 
 const App = () => {
-  const { data: user, fetchData: fetchUser } = useFetch()
+  const { data: user, fetchData: fetchUser } = useFetch('/users/current')
+  const { data: order, fetchData: fetchOrder } = useFetch('/order')
 
   React.useEffect(() => {
-    fetchUser(`/users/current`)
+    fetchUser()
+    fetchOrder()
   }, [])
 
   return (
     <div>
-      <AppBar position="relative">
+      <AppBar position="relative" sx={{ mb: 2 }}>
         <Toolbar>
           <Grid container justifyContent="space-between">
             <Grid item sx={{ ml: 2 }}>
               <Account account={user} />
             </Grid>
             <Grid item sx={{ mr: 2 }}>
-              <Basket />
+              <Basket order={order} />
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
       <main>
         <Container maxWidth="lg">
-          <ProductsList />
+          <ProductsList order={order} fetchOrder={fetchOrder} />
         </Container>
       </main>
     </div>
