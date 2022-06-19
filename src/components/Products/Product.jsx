@@ -48,7 +48,7 @@ const Product = ({ product, orderItem, setOrderItem }) => {
                             <Button size="small" onClick={() => setOrderItem(product, { count: 1 })}>Добавить</Button>
                         )
                     }
-                    
+                    <Typography sx={{ flex: '1 1 0', textAlign: 'right', mr: 2 }}>{product.price}₽</Typography>
                 </CardActions>
             </Card>
         </Grid>

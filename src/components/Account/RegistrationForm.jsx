@@ -3,22 +3,21 @@ import { TextField } from '@mui/material';
 import Form from './Form'
 import useFetch from '../../network/useFetch';
 
-const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
+const RegistrationForm = ({ handleCloseDialog, performAction, setLogin }) => {
     const {fetchData: sendRegistrate} = useFetch()
 
     const registrate = React.useCallback(async () => {
         const email = document.getElementById('email').value
         const fullName = document.getElementById('full-name').value
         const password = document.getElementById('password').value
-        await sendRegistrate({
+        performAction(sendRegistrate({
             url: '/registration', 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, full_name: fullName, password }) 
-        })
-        handleCloseDialog()
+        }))
     }, [])
 
     return (

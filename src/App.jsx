@@ -5,14 +5,24 @@ import Basket from './components/Basket/Basket'
 import useFetch from './network/useFetch'
 import ProductsList from './components/Products/ProductsList'
 import Account from './components/Account/Account'
+import { useCallback } from 'react'
+import { isValue } from './helpers'
 
 const App = () => {
   const { data: user, fetchData: fetchUser } = useFetch('/users/current')
   const { data: order, fetchData: fetchOrder } = useFetch('/order')
+  const productsData = useFetch('/products');
+
+
+  const reload = useCallback(
+    () => Promise.allSettled([
+      fetchUser(),
+      fetchOrder(),
+    ]), []
+  )
 
   React.useEffect(() => {
-    fetchUser()
-    fetchOrder()
+    reload()
   }, [])
 
   return (
@@ -21,17 +31,17 @@ const App = () => {
         <Toolbar>
           <Grid container justifyContent="space-between">
             <Grid item sx={{ ml: 2 }}>
-              <Account account={user} />
+              <Account reload={reload} account={user} />
             </Grid>
             <Grid item sx={{ mr: 2 }}>
-              <Basket order={order} />
+              <Basket fetchOrder={fetchOrder} products={isValue(productsData) ? productsData.data : null} order={order} />
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
       <main>
         <Container maxWidth="lg">
-          <ProductsList order={order} fetchOrder={fetchOrder} />
+          <ProductsList {...productsData} user={user} order={order} fetchOrder={fetchOrder} />
         </Container>
       </main>
     </div>

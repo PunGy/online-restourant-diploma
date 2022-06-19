@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Typography, Grid } from '@mui/material';
+import { TextField } from '@mui/material';
 import useFetch from '../../network/useFetch';
 import Form from './Form'
 
-const LoginForm = ({ handleCloseDialog, setRegistration }) => {
+const LoginForm = ({ handleCloseDialog, performAction, setRegistration }) => {
     const {fetchData: sendLogin} = useFetch()
 
     const login = React.useCallback(async () => {
         const email = document.getElementById('email').value
         const password = document.getElementById('password').value
-        await sendLogin({
+        performAction(sendLogin({
             url: '/login',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }) 
-        })
-        handleCloseDialog()
+        }))
     }, [])
 
     return (
