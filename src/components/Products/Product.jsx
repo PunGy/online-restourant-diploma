@@ -12,9 +12,9 @@ import {
 import Add from '@mui/icons-material/Add'
 import Remove from '@mui/icons-material/Remove'
 
-const Product = ({ product, orderItem }) => {
+const Product = ({ product, orderItem, setOrderItem }) => {
     return (
-        <Grid item xs={12} sm={6} md={4} onClick={(event) => event.product = product}>
+        <Grid item xs={12} sm={6} md={4}>
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
             >
@@ -39,13 +39,13 @@ const Product = ({ product, orderItem }) => {
                     {orderItem 
                         ? (
                             <>
-                                <IconButton size="small" onClick={(event) => event.buttontype = 'decrement_count'}><Remove /></IconButton>
+                                <IconButton size="small" onClick={() => setOrderItem(product, { count: orderItem.count - 1 })}><Remove /></IconButton>
                                 <Typography>{orderItem.count}</Typography>
-                                <IconButton size="small" onClick={(event) => event.buttontype = 'increment_count'}><Add /></IconButton>
+                                <IconButton size="small" onClick={() => setOrderItem(product, { count: orderItem.count + 1 })}><Add /></IconButton>
                             </>
                         )
                         : (
-                            <Button size="small" onClick={(event) => event.buttontype = 'add_to_basket'}>Добавить</Button>
+                            <Button size="small" onClick={() => setOrderItem(product, { count: 1 })}>Добавить</Button>
                         )
                     }
                     

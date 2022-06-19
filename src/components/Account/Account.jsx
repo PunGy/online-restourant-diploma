@@ -3,12 +3,14 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import { IconButton, Menu, MenuItem, Dialog } from '@mui/material';
 import LoginForm from './LoginForm'
 import RegistrationForm from './RegistrationForm'
-
+import useFetch from '../../network/useFetch'
+import { pipe } from 'ramda';
 
 const Account = ({ account }) => {
     const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
     const [anchorDialogEl, setAnchorDialogEl] = React.useState(null);
     const [form, setForm] = React.useState('login')
+    const { fetchData: logout } = useFetch('/logout')
     const isAuthorized = account && account.error == null
   
     const handleMenu = (event) => {
@@ -62,6 +64,7 @@ const Account = ({ account }) => {
                 onClose={handleCloseMenu}
               >
                 <MenuItem onClick={handleCloseMenu}>{account.full_name}</MenuItem>
+                <MenuItem onClick={pipe(logout, handleCloseMenu)}>Выйти</MenuItem>
               </Menu>
             ) : (
               <Dialog open={Boolean(anchorDialogEl)} onClose={handleCloseDialog}>

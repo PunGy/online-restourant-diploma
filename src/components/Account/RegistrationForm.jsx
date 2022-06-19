@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
+import Form from './Form'
 import useFetch from '../../network/useFetch';
 
 const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
@@ -9,7 +10,8 @@ const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
         const email = document.getElementById('email').value
         const fullName = document.getElementById('full-name').value
         const password = document.getElementById('password').value
-        await sendRegistrate('/registration', { 
+        await sendRegistrate({
+            url: '/registration', 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -18,47 +20,45 @@ const RegistrationForm = ({ handleCloseDialog, setLogin }) => {
         })
         handleCloseDialog()
     }, [])
+
     return (
-        <>
-            <DialogTitle>Регистрация</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Зарегистрируйтесь, чтобы иметь возможность делать заказы
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    label="Email адрес"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="full-name"
-                    label="Полное имя"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="password"
-                    label="Пароль"
-                    type="password"
-                    fullWidth
-                    variant="standard"
-                />
-            </DialogContent>
-            <DialogActions>
-                <Typography onClick={setLogin} sx={{ flex: '1 1 0', cursor: 'pointer', textDecoration: 'underline' }} color="primary">Логин</Typography>
-                <Button onClick={handleCloseDialog}>Отмена</Button>
-                <Button onClick={registrate}>Регистрация</Button>
-            </DialogActions>
-        </>
+         <Form
+            handleCloseDialog={handleCloseDialog}
+            title="Регистрация"
+            description="Введите ваш email и пароль"
+            onSubmit={registrate}
+            submitAction="Зарегистрироваться"
+            changeForm={setLogin}
+            changeFormAction="Логин"
+        >
+            <TextField
+                autoFocus
+                margin="dense"
+                id="email"
+                label="Email адрес"
+                type="email"
+                fullWidth
+                variant="standard"
+            />
+            <TextField
+                autoFocus
+                margin="dense"
+                id="full-name"
+                label="Полное имя"
+                type="text"
+                fullWidth
+                variant="standard"
+            />
+            <TextField
+                autoFocus
+                margin="dense"
+                id="password"
+                label="Пароль"
+                type="password"
+                fullWidth
+                variant="standard"
+            />
+        </Form>
     )
 }
 

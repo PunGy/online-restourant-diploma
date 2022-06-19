@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Typography } from '@mui/material';
+import { DialogTitle, DialogContent, DialogContentText, DialogActions, Button, TextField, Typography, Grid } from '@mui/material';
 import useFetch from '../../network/useFetch';
+import Form from './Form'
 
 const LoginForm = ({ handleCloseDialog, setRegistration }) => {
     const {fetchData: sendLogin} = useFetch()
@@ -8,7 +9,8 @@ const LoginForm = ({ handleCloseDialog, setRegistration }) => {
     const login = React.useCallback(async () => {
         const email = document.getElementById('email').value
         const password = document.getElementById('password').value
-        await sendLogin('/login', { 
+        await sendLogin({
+            url: '/login',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,38 +21,34 @@ const LoginForm = ({ handleCloseDialog, setRegistration }) => {
     }, [])
 
     return (
-        <>
-        <DialogTitle>Логин</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Войдите, чтобы иметь возможность делать заказы
-                </DialogContentText>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    label="Email адрес"
-                    type="email"
-                    fullWidth
-                    variant="standard"
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="password"
-                    label="Пароль"
-                    type="password"
-                    fullWidth
-                    variant="standard"
-                />
-            </DialogContent>
-            <DialogActions>
-                <Typography onClick={setRegistration} sx={{ flex: '1 1 0', cursor: 'pointer', textDecoration: 'underline' }} color="primary">Регистрация</Typography>
-                <Button onClick={handleCloseDialog}>Отмена</Button>
-                <Button onClick={login}>Войти</Button>
-            </DialogActions>
-           
-        </>
+        <Form
+            handleCloseDialog={handleCloseDialog}
+            title="Логин"
+            description="Введите ваш email и пароль"
+            onSubmit={login}
+            submitAction="Войти"
+            changeForm={setRegistration}
+            changeFormAction="Регистрация"
+        >
+            <TextField
+                autoFocus
+                margin="dense"
+                id="email"
+                label="Email адрес"
+                type="email"
+                fullWidth
+                variant="standard"
+            />
+            <TextField
+                autoFocus
+                margin="dense"
+                id="password"
+                label="Пароль"
+                type="password"
+                fullWidth
+                variant="standard"
+            />
+        </Form>
     )
 }
 
